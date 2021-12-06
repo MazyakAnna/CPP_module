@@ -125,12 +125,18 @@ Fixed Fixed::operator-(Fixed const & rv_fixed) const
 
 Fixed Fixed::operator*(Fixed const & rv_fixed) const
 {
-	return (Fixed (this->_value * rv_fixed.getRawBits()));
+	Fixed ret;
+
+	ret.setRawBits((this->_value * rv_fixed.getRawBits()) >> this->_frac_bits);
+	return (ret);
 }
 
 Fixed Fixed::operator/(Fixed const & rv_fixed) const
 {
-	return (Fixed (this->_value / rv_fixed.getRawBits()));
+	Fixed ret;
+
+	ret.setRawBits((this->_value << this->_frac_bits) / rv_fixed.getRawBits());
+	return (ret);
 }
 
 
@@ -163,6 +169,35 @@ Fixed Fixed::operator--(int)
 	this->_value = this->_value - 1;
 	return tmp;
 }
+
+Fixed & Fixed::min(Fixed & first, Fixed & second)
+{
+	if (first <= second)
+		return (first);
+	return (second);
+}
+
+Fixed & Fixed::max(Fixed & first, Fixed & second)
+{
+	if (first >= second)
+		return (first);
+	return (second);
+}
+
+Fixed const & Fixed::min(Fixed const & first, Fixed const & second)
+{
+	if (first < second)
+		return (first);
+	return (second);
+}
+
+Fixed const & Fixed::max(Fixed const & first, Fixed const & second)
+{
+	if (first > second)
+		return (first);
+	return (second);
+}
+
 
 std::ostream& operator<<(std::ostream & o, Fixed const& fix_n)
 {
