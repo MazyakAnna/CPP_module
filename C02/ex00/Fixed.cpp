@@ -1,9 +1,9 @@
 #include "Fixed.hpp"
 
-Fixed::Fixed(void)
+Fixed::Fixed(void) : value (0)
 {
 	std::cout << "Default constructor called" << std::endl;
-	this->value = 0;
+	return ;
 }
 
 Fixed::~Fixed()
@@ -13,7 +13,7 @@ Fixed::~Fixed()
 }
 
 //copy constructor
-Fixed::Fixed(Fixed const & src);
+Fixed::Fixed(Fixed const & src)
 {
 	std::cout << "Copy constructor called" << std::endl;
 	this->value = src.getRawBits();
@@ -21,7 +21,7 @@ Fixed::Fixed(Fixed const & src);
 }
 
 // assignation operator overload.
-Fixed::Fixed &	operator=(Fixed const & rihgt_operand);
+Fixed &	Fixed::operator=(Fixed const & rihgt_operand)
 {
 	std::cout << "Assignation operator called " << std::endl;
 	this->value = rihgt_operand.getRawBits();

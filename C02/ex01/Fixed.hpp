@@ -1,7 +1,7 @@
 #ifndef FIXED_HPP
 # define FIXED_HPP
 # include <iostream>
-
+# include <cmath>
 
 class Fixed
 {
@@ -23,6 +23,6 @@ public:
 	int toInt(void) const;
 };
 
-std::iostream & operator<<(std::iostream& o, Fixed const& fix_n);
+std::ostream & operator<<(std::ostream & o, Fixed const& fix_n);
 
 #endif

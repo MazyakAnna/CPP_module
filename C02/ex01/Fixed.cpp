@@ -1,9 +1,9 @@
 #include "Fixed.hpp"
 
-Fixed::Fixed(void)
+Fixed::Fixed(void) : value (0)
 {
 	std::cout << "Default constructor called" << std::endl;
-	this->value = 0;
+	return ;
 }
 
 Fixed::Fixed(const int int_val)
@@ -15,12 +15,11 @@ Fixed::Fixed(const int int_val)
 
 Fixed::Fixed(const float fl_val)
 {
-	int	tmp_int;
+	int	tail_saver;
 
 	std::cout << "Float constructor called" << std::endl;
-	//tmp_int = 1 << frac_bits;
-	//this->value = roundf(fl_val * tmp_int);
-	this->value = roundf(fl_val << this->frac_bits);
+	tail_saver = 1 << frac_bits;
+	this->value = roundf(fl_val * tail_saver);
 	return ;
 }
 
@@ -31,7 +30,7 @@ Fixed::~Fixed()
 }
 
 //copy constructor
-Fixed::Fixed(Fixed const & src);
+Fixed::Fixed(Fixed const & src)
 {
 	std::cout << "Copy constructor called" << std::endl;
 	this->value = src.getRawBits();
@@ -39,7 +38,7 @@ Fixed::Fixed(Fixed const & src);
 }
 
 // assignation operator overload.
-Fixed::Fixed &	operator=(Fixed const & rihgt_operand);
+Fixed &	Fixed::operator=(Fixed const & rihgt_operand)
 {
 	std::cout << "Assignation operator called " << std::endl;
 	this->value = rihgt_operand.getRawBits();
@@ -59,20 +58,20 @@ int Fixed::getRawBits( void ) const//returns the raw value of the fixed point va
 	return (this->value);
 }
 
-float	toFloat(void) const
+float	Fixed::toFloat(void) const
 {
 	float	res;
 
-	res = this->value >> this->frac_bits;
+	res = (float)this->value / (1 << this->frac_bits);
 	return (res);
 }
 
-int	toInt(void) const
+int	Fixed::toInt(void) const
 {
 	return (this->value >> this->frac_bits);
 }
 
-std::iostream& operator<<(std::iostream& o, Fixed const& fix_n)
+std::ostream& operator<<(std::ostream & o, Fixed const& fix_n)
 {
 	o << fix_n.toFloat();
 	return o;

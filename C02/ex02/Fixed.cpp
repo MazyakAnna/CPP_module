@@ -1,78 +1,170 @@
 #include "Fixed.hpp"
 
-Fixed::Fixed(void)
+Fixed::Fixed(void) : _value (0)
 {
-	std::cout << "Default constructor called" << std::endl;
-	this->value = 0;
+//	std::cout << "Default constructor called" << std::endl;
+	return ;
 }
 
 Fixed::Fixed(const int int_val)
 {
-	std::cout << "Int constructor called" << std::endl;
-	this->value = int_val << this->frac_bits;
+//	std::cout << "Int constructor called" << std::endl;
+	this->_value = int_val << this->_frac_bits;
 	return ;
 }
 
 Fixed::Fixed(const float fl_val)
 {
-	int	tmp_int;
+	int	tail_saver;
 
-	std::cout << "Float constructor called" << std::endl;
-	//tmp_int = 1 << frac_bits;
-	//this->value = roundf(fl_val * tmp_int);
-	this->value = roundf(fl_val << this->frac_bits);
+//	std::cout << "Float constructor called" << std::endl;
+	tail_saver = 1 << this->_frac_bits;
+	this->_value = roundf(fl_val * tail_saver);
 	return ;
 }
 
 Fixed::~Fixed()
 {
-	std::cout << "Destructor called" << std::endl;
+//	std::cout << "Destructor called" << std::endl;
 	return ;
 }
 
 //copy constructor
-Fixed::Fixed(Fixed const & src);
+Fixed::Fixed(Fixed const & src)
 {
-	std::cout << "Copy constructor called" << std::endl;
-	this->value = src.getRawBits();
+//	std::cout << "Copy constructor called" << std::endl;
+	this->_value = src.getRawBits();
 	return ;
 }
 
 // assignation operator overload.
-Fixed::Fixed &	operator=(Fixed const & rihgt_operand);
+Fixed &	Fixed::operator=(Fixed const & rihgt_operand)
 {
-	std::cout << "Assignation operator called " << std::endl;
-	this->value = rihgt_operand.getRawBits();
+//	std::cout << "Assignation operator called " << std::endl;
+	this->_value = rihgt_operand.getRawBits();
 	return (*this);
 }
 
 
-void Fixed::setRawBits( int const raw ) //sets the raw value of the fixed point value
+void Fixed::setRawBits( int const raw )
 {
-	this->value = raw;
+	this->_value = raw;
 	return ;
 }
 
 int Fixed::getRawBits( void ) const//returns the raw value of the fixed point value.
 {
-	std::cout << "getRawBits member function called" << std::endl;
-	return (this->value);
+//	std::cout << "getRawBits member function called" << std::endl;
+	return (this->_value);
 }
 
-float	toFloat(void) const
+float	Fixed::toFloat(void) const
 {
 	float	res;
 
-	res = this->value >> this->frac_bits;
+	res = (float)this->_value / (1 << this->_frac_bits);
 	return (res);
 }
 
-int	toInt(void) const
+int	Fixed::toInt(void) const
 {
-	return (this->value >> this->frac_bits);
+	return (this->_value >> this->_frac_bits);
 }
 
-std::iostream& operator<<(std::iostream& o, Fixed const& fix_n)
+bool Fixed::operator>(Fixed const & rv_fixed) const
+{
+	if (this->_value > rv_fixed.getRawBits())
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator<(Fixed const & rv_fixed) const
+{
+	if (this->_value < rv_fixed.getRawBits())
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator>=(Fixed const & rv_fixed) const
+{
+	if (this->_value < rv_fixed.getRawBits())
+		return (false);
+	return (true);
+}
+
+bool Fixed::operator<=(Fixed const & rv_fixed) const
+{
+	if (this->_value > rv_fixed.getRawBits())
+		return (false);
+	return (true);
+}
+
+bool Fixed::operator==(Fixed const & rv_fixed) const
+{
+	if (this->_value == rv_fixed.getRawBits())
+		return (true);
+	return (false);
+}
+
+bool Fixed::operator!=(Fixed const & rv_fixed) const
+{
+	if (this->_value == rv_fixed.getRawBits())
+		return (false);
+	return (true);
+}
+
+Fixed Fixed::operator+(Fixed const & rv_fixed) const
+{
+	return (Fixed (this->_value + rv_fixed.getRawBits()));
+}
+
+Fixed Fixed::operator-(Fixed const & rv_fixed) const
+{
+	return (Fixed (this->_value - rv_fixed.getRawBits()));
+}
+
+Fixed Fixed::operator*(Fixed const & rv_fixed) const
+{
+	return (Fixed (this->_value * rv_fixed.getRawBits()));
+}
+
+Fixed Fixed::operator/(Fixed const & rv_fixed) const
+{
+	return (Fixed (this->_value / rv_fixed.getRawBits()));
+}
+
+
+Fixed & Fixed::operator++(void)
+{
+	this->_value = this->_value + 1;
+	return *this;
+}
+
+Fixed & Fixed::operator--(void)
+{
+	this->_value = this->_value - 1;
+	return *this;
+}
+
+Fixed Fixed::operator++(int)
+{
+	Fixed tmp;
+
+	tmp = *this;
+	this->_value = this->_value + 1;
+	return tmp;
+}
+
+Fixed Fixed::operator--(int)
+{
+	Fixed tmp;
+
+	tmp = *this;
+	this->_value = this->_value - 1;
+	return tmp;
+}
+
+std::ostream& operator<<(std::ostream & o, Fixed const& fix_n)
 {
 	o << fix_n.toFloat();
 	return o;
