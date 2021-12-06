@@ -1,8 +1,8 @@
 NAME = fixed_point_number
 
-SRCS = fixed.cpp main.cpp
+SRCS = Fixed.cpp main.cpp
 
-HEADERS = fixed.hpp
+HEADERS = Fixed.hpp
 
 CPP = clang++
 CPPFLAGS = -Wall -Wextra -Werror
