@@ -115,12 +115,18 @@ bool Fixed::operator!=(Fixed const & rv_fixed) const
 
 Fixed Fixed::operator+(Fixed const & rv_fixed) const
 {
-	return (Fixed (this->_value + rv_fixed.getRawBits()));
+	Fixed	ret;
+
+	ret.setRawBits(this->_value + rv_fixed.getRawBits());
+	return (ret);
 }
 
 Fixed Fixed::operator-(Fixed const & rv_fixed) const
 {
-	return (Fixed (this->_value - rv_fixed.getRawBits()));
+	Fixed	ret;
+
+	ret.setRawBits(this->_value - rv_fixed.getRawBits());
+	return (ret);
 }
 
 Fixed Fixed::operator*(Fixed const & rv_fixed) const
